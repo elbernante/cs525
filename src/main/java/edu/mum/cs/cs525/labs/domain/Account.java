@@ -11,7 +11,7 @@ public class Account {
 	
 	private Interestable interestable;
 
-	private List<AccountEntry> entryList = new ArrayList<AccountEntry>();
+	private List<AccountEntry> entries = new ArrayList<AccountEntry>();
 
 	public Account(String accountNumber, Interestable interestable) {
 		this.accountNumber = accountNumber;
@@ -28,7 +28,7 @@ public class Account {
 
 	public double getBalance() {
 		double balance = 0;
-		for (AccountEntry entry : entryList) {
+		for (AccountEntry entry : entries) {
 			balance += entry.getAmount();
 		}
 		return balance;
@@ -36,16 +36,16 @@ public class Account {
 
 	public void deposit(double amount) {
 		AccountEntry entry = new AccountEntry(amount, "deposit", "", "");
-		entryList.add(entry);
+		entries.add(entry);
 	}
 
 	public void withdraw(double amount) {
 		AccountEntry entry = new AccountEntry(-amount, "withdraw", "", "");
-		entryList.add(entry);
+		entries.add(entry);
 	}
 
 	private void addEntry(AccountEntry entry) {
-		entryList.add(entry);
+		entries.add(entry);
 	}
 
 	public void transferFunds(Account toAccount, double amount, String description) {
@@ -54,7 +54,7 @@ public class Account {
 		AccountEntry toEntry = new AccountEntry(amount, description, toAccount.getAccountNumber(),
 				toAccount.getCustomer().getName());
 		
-		entryList.add(fromEntry);
+		entries.add(fromEntry);
 		
 		toAccount.addEntry(toEntry);
 	}
@@ -62,7 +62,7 @@ public class Account {
 	public void addInterest() {
 		double interest = interestable.computeInterest(getBalance());
 		AccountEntry entry = new AccountEntry(interest, "interest", "", "");
-		entryList.add(entry);
+		entries.add(entry);
 	}
 
 	public Customer getCustomer() {
@@ -82,7 +82,7 @@ public class Account {
 	}
 	
 	public Collection<AccountEntry> getEntryList() {
-		return entryList;
+		return entries;
 	}
 
 }

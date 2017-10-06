@@ -4,6 +4,10 @@ import edu.mum.cs.cs525.labs.domain.Account;
 import edu.mum.cs.cs525.labs.domain.AccountEntry;
 import edu.mum.cs.cs525.labs.domain.CheckingInterest;
 import edu.mum.cs.cs525.labs.domain.Customer;
+import edu.mum.cs.cs525.labs.domain.Interestable;
+import edu.mum.cs.cs525.labs.domain.P1;
+import edu.mum.cs.cs525.labs.domain.P2;
+import edu.mum.cs.cs525.labs.domain.P3;
 import edu.mum.cs.cs525.labs.domain.SavingsInterest;
 import edu.mum.cs.cs525.labs.observers.EmailSender;
 import edu.mum.cs.cs525.labs.observers.Logger;
@@ -19,8 +23,16 @@ public class Application {
 		accountService.on(AccountService.ACCOUNT_CREATED, new EmailSender());
 
 		// create 2 accounts;
-		accountService.createAccount("1263862", "Frank Brown", new SavingsInterest());
-		accountService.createAccount("4253892", "John Doe", new CheckingInterest());
+		Interestable interest1 = new SavingsInterest();
+		interest1 = new P1(interest1);
+		interest1 = new P3(interest1);
+		accountService.createAccount("1263862", "Frank Brown", interest1);
+		
+		Interestable interest2 = new CheckingInterest();
+		interest2 = new P2(interest2);
+		interest2 = new P3(interest2);
+		accountService.createAccount("4253892", "John Doe", interest2);
+		
 		// use account 1;
 		accountService.deposit("1263862", 240);
 		accountService.deposit("1263862", 529);
