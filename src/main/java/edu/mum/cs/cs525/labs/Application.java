@@ -1,5 +1,7 @@
 package edu.mum.cs.cs525.labs;
 
+import edu.mum.cs.cs525.labs.DAO.AccountDAOFactory;
+import edu.mum.cs.cs525.labs.DAO.MockAccountDAOFactory;
 import edu.mum.cs.cs525.labs.domain.Account;
 import edu.mum.cs.cs525.labs.domain.AccountEntry;
 import edu.mum.cs.cs525.labs.domain.CheckingInterest;
@@ -17,7 +19,8 @@ import edu.mum.cs.cs525.labs.service.AccountServiceImpl;
 
 public class Application {
 	public static void main(String[] args) {
-		AccountService accountService = new AccountServiceImpl();
+		AccountDAOFactory accountDAOFactory = new MockAccountDAOFactory();
+		AccountService accountService = new AccountServiceImpl(accountDAOFactory.getAccountDAO());
 		accountService.on(AccountService.ACCOUNT_CHANGED, new Logger());
 		accountService.on(AccountService.ACCOUNT_CHANGED, new SMSSender());
 		accountService.on(AccountService.ACCOUNT_CREATED, new EmailSender());

@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 import edu.mum.cs.cs525.labs.DAO.AccountDAO;
-import edu.mum.cs.cs525.labs.DAO.AccountDAOImpl;
 import edu.mum.cs.cs525.labs.domain.Account;
 import edu.mum.cs.cs525.labs.domain.Customer;
 import edu.mum.cs.cs525.labs.domain.Interestable;
@@ -17,8 +16,8 @@ public class AccountServiceImpl implements AccountService {
 	private Map<String, Collection<Observer<? super Account>>> observers = new HashMap<>();
 	private AccountDAO accountDAO;
 	
-	public AccountServiceImpl(){
-		accountDAO = new AccountDAOImpl();
+	public AccountServiceImpl(AccountDAO accountDAO){
+		this.accountDAO = accountDAO;
 	}
 
 	public Account createAccount(String accountNumber, String customerName, Interestable interestable) {
