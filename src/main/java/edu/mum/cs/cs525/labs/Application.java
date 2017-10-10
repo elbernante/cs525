@@ -11,9 +11,9 @@ import edu.mum.cs.cs525.labs.domain.P1;
 import edu.mum.cs.cs525.labs.domain.P2;
 import edu.mum.cs.cs525.labs.domain.P3;
 import edu.mum.cs.cs525.labs.domain.SavingsInterest;
-import edu.mum.cs.cs525.labs.observers.EmailSender;
-import edu.mum.cs.cs525.labs.observers.Logger;
-import edu.mum.cs.cs525.labs.observers.SMSSender;
+import edu.mum.cs.cs525.labs.observer.EmailSender;
+import edu.mum.cs.cs525.labs.observer.Logger;
+import edu.mum.cs.cs525.labs.observer.SMSSender;
 import edu.mum.cs.cs525.labs.service.AccountService;
 import edu.mum.cs.cs525.labs.service.AccountServiceImpl;
 
@@ -44,6 +44,10 @@ public class Application {
 		accountService.deposit("4253892", 12450);
 		accountService.transferFunds("4253892", "1263862", 100, "payment of invoice 10232");
 
+		accountService.undo();
+		accountService.undo();
+		accountService.undo();
+		
 		// add interests
 		accountService.addInterest();
 		

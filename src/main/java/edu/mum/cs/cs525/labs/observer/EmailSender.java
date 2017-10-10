@@ -1,4 +1,4 @@
-package edu.mum.cs.cs525.labs.observers;
+package edu.mum.cs.cs525.labs.observer;
 
 import edu.mum.cs.cs525.labs.domain.Account;
 import edu.mum.cs.cs525.labs.util.Observer;

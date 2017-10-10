@@ -17,4 +17,5 @@ public interface AccountService extends Observable<Account> {
     void withdraw (String accountNumber, double amount);
     void transferFunds(String fromAccountNumber, String toAccountNumber, double amount, String description);
     void addInterest();
+    void undo();
 }
