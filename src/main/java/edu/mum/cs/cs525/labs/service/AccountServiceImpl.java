@@ -1,14 +1,13 @@
 package edu.mum.cs.cs525.labs.service;
 
 import java.util.Collection;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 
 import edu.mum.cs.cs525.labs.DAO.AccountDAO;
 import edu.mum.cs.cs525.labs.command.Command;
+import edu.mum.cs.cs525.labs.command.CommandInvoker;
 import edu.mum.cs.cs525.labs.command.DepositCommand;
 import edu.mum.cs.cs525.labs.command.TransferFundsCommand;
 import edu.mum.cs.cs525.labs.command.WithdrawCommand;
@@ -21,7 +20,7 @@ public class AccountServiceImpl implements AccountService {
 	
 	private Map<String, Collection<Observer<? super Account>>> observers = new HashMap<>();
 	private AccountDAO accountDAO;
-	private Deque<Command> commands = new LinkedList<>();
+	private CommandInvoker commandInvoker = new CommandInvoker();
 	
 	public AccountServiceImpl(AccountDAO accountDAO){
 		this.accountDAO = accountDAO;
@@ -37,10 +36,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	public void deposit(String accountNumber, double amount) {
-		Command depositCommand = new DepositCommand(accountDAO, accountNumber, amount);
-		depositCommand.execute();
-		commands.push(depositCommand);
-//		notifyAll(ACCOUNT_CHANGED, account);
+		Command depositCommand = new DepositCommand(this, accountDAO, accountNumber, amount);
+		commandInvoker.invoke(depositCommand);
 	}
 
 	public Account getAccount(String accountNumber) {
@@ -53,25 +50,18 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	public void withdraw(String accountNumber, double amount) {
-		Command withdrawCommand = new WithdrawCommand(accountDAO, accountNumber, amount);
-		withdrawCommand.execute();
-		commands.push(withdrawCommand);
-//		notifyAll(ACCOUNT_CHANGED, account);
+		Command withdrawCommand = new WithdrawCommand(this, accountDAO, accountNumber, amount);
+		commandInvoker.invoke(withdrawCommand);
 	}
 
 	public void transferFunds(String fromAccountNumber, String toAccountNumber, double amount, String description) {
-		Command transferFundsCommand = new TransferFundsCommand(accountDAO, fromAccountNumber, toAccountNumber, amount, description);
-		transferFundsCommand.execute();
-		commands.push(transferFundsCommand);
-//		notifyAll(ACCOUNT_CHANGED, fromAccount);
-//		notifyAll(ACCOUNT_CHANGED, toAccount);
+		Command transferFundsCommand = new TransferFundsCommand(this, accountDAO, fromAccountNumber, toAccountNumber, amount, description);
+		commandInvoker.invoke(transferFundsCommand);
 	}
 	
 	@Override
 	public void undo() {
-		if (commands.size() > 0) {
-			commands.pop().undo();
-		}
+		commandInvoker.undo();
 	}
 	
 	@Override
