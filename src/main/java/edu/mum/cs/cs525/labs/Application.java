@@ -2,6 +2,8 @@ package edu.mum.cs.cs525.labs;
 
 import edu.mum.cs.cs525.labs.DAO.AccountDAOFactory;
 import edu.mum.cs.cs525.labs.DAO.MockAccountDAOFactoryImpl;
+import edu.mum.cs.cs525.labs.adapter.Logger.LogLevel;
+import edu.mum.cs.cs525.labs.adapter.LoggerAdapter;
 import edu.mum.cs.cs525.labs.domain.Account;
 import edu.mum.cs.cs525.labs.domain.AccountEntry;
 import edu.mum.cs.cs525.labs.domain.CheckingInterest;
@@ -19,6 +21,7 @@ import edu.mum.cs.cs525.labs.service.AccountServiceImpl;
 
 public class Application {
 	public static void main(String[] args) {
+		LoggerAdapter.getInstance().log(LogLevel.INFO, "System startup...");
 		AccountDAOFactory accountDAOFactory = new MockAccountDAOFactoryImpl();
 		AccountService accountService = new AccountServiceImpl(accountDAOFactory.getAccountDAO());
 		accountService.on(AccountService.ACCOUNT_CHANGED, new Logger());
@@ -71,6 +74,8 @@ public class Application {
 			System.out.println("----------------------------------------" + "----------------------------------------");
 			System.out.printf("%30s%30s%20.2f\n\n", "", "Current Balance:", account.getBalance());
 		}
+		
+		LoggerAdapter.getInstance().log(LogLevel.INFO, "System shutdown.");
 	}
 
 }
